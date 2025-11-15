@@ -15,7 +15,7 @@ export default function Login() {
   const [isOpen, setIsOpen] = useState<boolean>(() => {
     if (typeof window === "undefined") return true;
     const stored = localStorage.getItem("isOpen");
-    return stored ? JSON.parse(stored) : true;
+    return stored ? JSON.parse(stored) : false;
   });
 
   const [mockUpUser] = useState<User>({ username: "admin", password: "pass" });
