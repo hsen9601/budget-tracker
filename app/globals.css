@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* chatgpt generated css file*/
+
+/* =========================
+   Root Variables
+========================= */
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --font-sans: "Poppins", sans-serif;
+  --font-mono: "Fira Code", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #121212;
+    --color-foreground: #ededed;
+  }
+}
+
+/* =========================
+   Global Styles
+========================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* =========================
+   Form Styling
+========================= */
+input, select, textarea, button {
+  font-family: var(--font-sans);
+}
+
+input, select, textarea {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  color: #171717;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #48566d; /* Tailwind blue-500 */
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #2563eb; /* Tailwind blue-600 */
+}
+
+/* =========================
+   Containers & Layout
+========================= */
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+/* Flex helpers */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* =========================
+   Dark Mode Overrides
+========================= */
+@media (prefers-color-scheme: dark) {
+  input, select, textarea {
+    background-color: #1f1f1f;
+    color: #ededed;
+    border: 1px solid #333;
+  }
+
+  button {
+    background-color: #3b82f6;
+    color: #fff;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+/* =========================
+   Error / Alerts
+========================= */
+.errors {
+  color: #ff4d4f;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* =========================
+   Headings
+========================= */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  margin: 0;
+}
+
