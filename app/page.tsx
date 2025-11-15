@@ -1,6 +1,5 @@
 "use client";
 
-import { Flamenco } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -10,40 +9,51 @@ interface User {
 }
 
 export default function Login() {
+  const router = useRouter();
+
+  // Lazy state initialization for localStorage values
+  const [isOpen, setIsOpen] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    const stored = localStorage.getItem("isOpen");
+    return stored ? JSON.parse(stored) : true;
+  });
+
+  const [mockUpUser] = useState<User>({ username: "admin", password: "pass" });
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<User[]>([]);
-  const [mockUpUser, setMockUpUser] = useState<User>();
-  const [isOpen, setIsOpen] = useState<boolean>(true);
 
-  const router = useRouter();
+  // Fetch users (side-effect only)
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const resp = await fetch("/api/users");
+        const data = await resp.json();
+        setUsers(data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
-  const fetchUsers = async () => {
-    try {
-      const resp = await fetch("/api/users");
-      const data = await resp.json();
-      setUsers(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+    fetchUsers();
+  }, []);
 
   const handleToggle = () => {
-    localStorage.setItem("isOpen", JSON.stringify(!isOpen));
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => {
+      localStorage.setItem("isOpen", JSON.stringify(!prev));
+      return !prev;
+    });
   };
+
   const handleLogin = (username: string, password: string) => {
     const matchedUser = users.find(
       (user) => user.username === username && user.password === password
     );
 
-    if (matchedUser) {
-      console.log("The credentials were correct!", matchedUser);
-      localStorage.setItem("isLoggedIn", JSON.stringify(true));
-      router.push("/home");
-    } else if (
-      username == mockUpUser?.username &&
-      password == mockUpUser.password
+    if (
+      matchedUser ||
+      (username === mockUpUser.username && password === mockUpUser.password)
     ) {
       localStorage.setItem("isLoggedIn", JSON.stringify(true));
       router.push("/home");
@@ -51,17 +61,6 @@ export default function Login() {
       alert("Credentials were wrong");
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchUsers();
-      const stored = localStorage.getItem("isOpen");
-      if (stored) setIsOpen(JSON.parse(stored));
-      setMockUpUser({ username: "admin", password: "pass" });
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div
@@ -96,7 +95,7 @@ export default function Login() {
           Login
         </h1>
 
-        {/* USERNAME INPUT */}
+        {/* Username Input */}
         <div
           style={{ width: "100%", display: "flex", flexDirection: "column" }}
         >
@@ -118,7 +117,7 @@ export default function Login() {
           />
         </div>
 
-        {/* PASSWORD INPUT */}
+        {/* Password Input */}
         <div
           style={{ width: "100%", display: "flex", flexDirection: "column" }}
         >
@@ -141,7 +140,7 @@ export default function Login() {
           />
         </div>
 
-        {/* LOGIN BUTTON */}
+        {/* Login Button */}
         <button
           onClick={() => handleLogin(username, password)}
           style={{
@@ -159,12 +158,15 @@ export default function Login() {
         >
           Login
         </button>
+
+        {/* Toggle Credentials */}
         <button style={{ background: "green" }} onClick={() => handleToggle()}>
           See Credentials
         </button>
+
         {isOpen && (
           <p>
-            Username: {mockUpUser?.username}; Password: {mockUpUser?.password}
+            Username: {mockUpUser.username}; Password: {mockUpUser.password}
           </p>
         )}
       </div>

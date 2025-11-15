@@ -12,14 +12,14 @@ export type Resource = {
 
 export default function Home() {
   const router = useRouter();
-  const [resources, setResources] = useState<Resource[]>([]);
-  const [resource, setResource] = useState("");
-  const [amount, setAmount] = useState<number>(0);
-  const [hasLoaded, setHasLoaded] = useState(false);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [type, setType] = useState<string>("expense");
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const categoryOptions = [
+
+  const [resources, setResources] = useState<Resource[]>(() => {
+    if (typeof window === "undefined") return [];
+    const stored = localStorage.getItem("resources");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const [categories] = useState<string[]>([
     "Lebensmittel",
     "Lohn/Gehalt",
     "Abo",
@@ -29,8 +29,17 @@ export default function Home() {
     "Tierhaltung",
     "Versicherung",
     "Internet",
-  ];
-  const [category, setCategory] = useState<string>(categoryOptions[0]);
+  ]);
+
+  const [category, setCategory] = useState<string>(categories[0]);
+  const [resource, setResource] = useState("");
+  const [amount, setAmount] = useState<number>(0);
+  const [type, setType] = useState<string>("expense");
+  const [loggedIn, setLoggedIn] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return localStorage.getItem("isLoggedIn") === "true";
+  });
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const handleLogout = () => {
     localStorage.setItem("isLoggedIn", "false");
@@ -39,38 +48,24 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (hasLoaded) localStorage.setItem("resources", JSON.stringify(resources));
+  }, [resources, hasLoaded]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const timer = setTimeout(() => {
-      setCategories(categoryOptions);
-      const storage = localStorage.getItem("resources");
-      if (storage) setResources(JSON.parse(storage));
       setHasLoaded(true);
     }, 0);
 
     return () => clearTimeout(timer);
   }, []);
 
+  // Redirect if not logged in
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const storedLoggedIn = localStorage.getItem("isLoggedIn");
-      if (storedLoggedIn !== "true") {
-        router.push("/");
-      } else {
-        setLoggedIn(true);
-      }
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [router]);
-
-  useEffect(() => {
-    if (hasLoaded) {
-      const timer = setTimeout(() => {
-        localStorage.setItem("resources", JSON.stringify(resources));
-      }, 0);
-
-      return () => clearTimeout(timer);
-    }
-  }, [resources, hasLoaded]);
+    if (!loggedIn) router.push("/");
+  }, [loggedIn, router]);
 
   const handleAdd = (
     name: string,
@@ -80,13 +75,12 @@ export default function Home() {
   ) => {
     if (!name || !amount) return;
     setResources((prev) => [...prev, { name, amount, category, type }]);
-    setAmount(0);
     setResource("");
+    setAmount(0);
   };
 
   const handleDelete = (index: number) => {
-    const newResources = resources.filter((_, i) => i !== index);
-    setResources(newResources);
+    setResources((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
