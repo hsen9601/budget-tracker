@@ -53,10 +53,14 @@ export default function Login() {
   };
 
   useEffect(() => {
-    fetchUsers();
-    const stored = localStorage.getItem("isOpen");
-    if (stored) setIsOpen(JSON.parse(stored));
-    setMockUpUser({ username: "admin", password: "pass" });
+    const timer = setTimeout(() => {
+      fetchUsers();
+      const stored = localStorage.getItem("isOpen");
+      if (stored) setIsOpen(JSON.parse(stored));
+      setMockUpUser({ username: "admin", password: "pass" });
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (

@@ -39,23 +39,37 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setCategories(categoryOptions);
-    const storage = localStorage.getItem("resources");
-    if (storage) setResources(JSON.parse(storage));
-    setHasLoaded(true);
+    const timer = setTimeout(() => {
+      setCategories(categoryOptions);
+      const storage = localStorage.getItem("resources");
+      if (storage) setResources(JSON.parse(storage));
+      setHasLoaded(true);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    const storedLoggedIn = localStorage.getItem("isLoggedIn");
-    if (storedLoggedIn !== "true") {
-      router.push("/");
-    } else {
-      setLoggedIn(true);
+    const timer = setTimeout(() => {
+      const storedLoggedIn = localStorage.getItem("isLoggedIn");
+      if (storedLoggedIn !== "true") {
+        router.push("/");
+      } else {
+        setLoggedIn(true);
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [router]);
+
+  useEffect(() => {
+    if (hasLoaded) {
+      const timer = setTimeout(() => {
+        localStorage.setItem("resources", JSON.stringify(resources));
+      }, 0);
+
+      return () => clearTimeout(timer);
     }
-  }, []);
-
-  useEffect(() => {
-    if (hasLoaded) localStorage.setItem("resources", JSON.stringify(resources));
   }, [resources, hasLoaded]);
 
   const handleAdd = (

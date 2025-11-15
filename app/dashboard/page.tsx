@@ -29,22 +29,15 @@ export default function Dashboard() {
   const totalExpense = resources
     .filter((r) => r.type === "expense")
     .reduce((sum, r) => sum + r.amount, 0);
-  useEffect(() => {
-    const stored = localStorage.getItem("resources");
-    if (stored) setResources(JSON.parse(stored));
-  }, []);
-
-  useEffect(() => {
-    calculateSum(resources);
-  }, [resources]);
 
   const calculateSum = (resources: Resource[]) => {
-    let totalExpenses = 0;
-    let totalIncome = 0;
-    for (const r of resources) {
-      if (r.type === "expense") totalExpenses += r.amount;
-      else totalIncome += r.amount;
-    }
+    const totalExpenses = resources
+      .filter((r) => r.type === "expense")
+      .reduce((acc, r) => acc + r.amount, 0);
+    const totalIncome = resources
+      .filter((r) => r.type === "income")
+      .reduce((acc, r) => acc + r.amount, 0);
+
     setSum(totalExpenses);
     setSalary(totalIncome);
   };
@@ -58,6 +51,22 @@ export default function Dashboard() {
     setLoggedIn(false);
     router.push("/");
   };
+  useEffect(() => {
+    const storedSeeCharts = localStorage.getItem("seeCharts");
+    if (storedSeeCharts) setSeeCharts(JSON.parse(storedSeeCharts));
+
+    const storedResources = localStorage.getItem("resources");
+    if (storedResources) setResources(JSON.parse(storedResources));
+  }, []);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("resources");
+    if (stored) setResources(JSON.parse(stored));
+  }, []);
+
+  useEffect(() => {
+    calculateSum(resources);
+  }, [resources]);
 
   useEffect(() => {
     const storedLoggedIn = localStorage.getItem("isLoggedIn");
@@ -66,7 +75,7 @@ export default function Dashboard() {
     } else {
       setLoggedIn(true);
     }
-  }, []);
+  }, [router]);
 
   return (
     <div
@@ -272,7 +281,9 @@ export default function Dashboard() {
                 cx="50%"
                 cy="50%"
                 outerRadius={100}
-                label={({ name }) => name}
+                label={({ name, percent }) =>
+                  `${name} ${(percent! * 100).toFixed(0)}%`
+                }
               >
                 {resources.map((r, index) => (
                   <Cell
