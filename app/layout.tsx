@@ -25,7 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
     <head>
-          <script async defer data-domain="budget-tracker-topaz-seven.vercel.app" src="https://plausible.io/js/script.js"></script>
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-7k1uJow_yQgyGsY0f5XVZ.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 
     </head>
       <body
