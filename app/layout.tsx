@@ -24,6 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <head>
+          <script async defer data-domain="budget-tracker-topaz-seven.vercel.app" src="https://plausible.io/js/script.js"></script>
+
+    </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
