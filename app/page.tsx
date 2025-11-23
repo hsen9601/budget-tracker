@@ -11,20 +11,23 @@ interface User {
 export default function Login() {
   const router = useRouter();
 
-  // Lazy state initialization for localStorage values
+  // Toggle to show credentials
   const [isOpen, setIsOpen] = useState<boolean>(() => {
     if (typeof window === "undefined") return true;
     const stored = localStorage.getItem("isOpen");
     return stored ? JSON.parse(stored) : false;
   });
 
-  const [mockUpUser] = useState<User>({ username: "admin", password: "pass" });
+  const [mockUpUser] = useState<User>({
+    username: "admin",
+    password: "pass",
+  });
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState<User[]>([]);
 
-  // Fetch users (side-effect only)
+  // Fetch users (optional)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -55,7 +58,34 @@ export default function Login() {
       matchedUser ||
       (username === mockUpUser.username && password === mockUpUser.password)
     ) {
-      localStorage.setItem("isLoggedIn", JSON.stringify(true));
+      localStorage.setItem("isLoggedIn", "true");
+
+      // Initialize mockup data for recruiter
+      if (mockUpUser && !localStorage.getItem("resources")) {
+        const mockResources = [
+          {
+            name: "Salary",
+            amount: 4000,
+            category: "Lohn/Gehalt",
+            type: "income",
+          },
+          { name: "Rent", amount: 1200, category: "Wohnen", type: "expense" },
+          {
+            name: "Groceries",
+            amount: 300,
+            category: "Lebensmittel",
+            type: "expense",
+          },
+          {
+            name: "Internet",
+            amount: 50,
+            category: "Internet",
+            type: "expense",
+          },
+        ];
+        localStorage.setItem("resources", JSON.stringify(mockResources));
+      }
+
       router.push("/home");
     } else {
       alert("Credentials were wrong");
@@ -104,7 +134,7 @@ export default function Login() {
           </label>
           <input
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
+            placeholder="admin"
             value={username}
             style={{
               padding: "0.6rem",
@@ -126,7 +156,7 @@ export default function Login() {
           </label>
           <input
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            placeholder="pass"
             type="password"
             value={password}
             style={{
@@ -160,12 +190,26 @@ export default function Login() {
         </button>
 
         {/* Toggle Credentials */}
-        <button style={{ background: "green" }} onClick={() => handleToggle()}>
+        <button
+          style={{
+            marginTop: "0.5rem",
+
+            backgroundColor: "#288880ff",
+            color: "white",
+            border: "none",
+            borderRadius: "6px",
+            padding: "0.8rem",
+            fontWeight: "500",
+            cursor: "pointer",
+            transition: "background-color 0.2s",
+          }}
+          onClick={() => handleToggle()}
+        >
           See Credentials
         </button>
 
         {isOpen && (
-          <p>
+          <p style={{ color: "white" }}>
             Username: {mockUpUser.username}; Password: {mockUpUser.password}
           </p>
         )}

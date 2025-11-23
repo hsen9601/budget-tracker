@@ -1,132 +1,325 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* styles/globals.css */
 
-/* chatgpt generated css file*/
-
-/* =========================
-   Root Variables
-========================= */
-:root {
-  --color-background: #ffffff;
-  --color-foreground: #171717;
-  --font-sans: "Poppins", sans-serif;
-  --font-mono: "Fira Code", monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #121212;
-    --color-foreground: #ededed;
-  }
-}
-
-/* =========================
-   Global Styles
-========================= */
-html, body {
+/* Box-sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--font-sans);
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+}
+
+/* Root variables for colors */
+:root {
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --bg-header: #111827;
+  --bg-input: #334155;
+  --bg-button-primary: #3b82f6;
+  --bg-button-success: #10b981;
+  --bg-button-danger: #ef4444;
+  --text-light: #f1f5f9;
+  --text-muted: #cbd5e1;
+  --text-expense: rgba(255, 142, 142, 1);
+  --text-income: rgba(115, 182, 106, 1);
+  --border-color: #475569;
+  --border-radius: 6px;
+}
+
+/* Global body styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  line-height: 1.5;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 }
 
-/* =========================
-   Form Styling
-========================= */
-input, select, textarea, button {
-  font-family: var(--font-sans);
-}
-
-input, select, textarea {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid #ccc;
+/* Container helper classes */
+.container {
+  max-width: 800px;
   width: 100%;
-  max-width: 400px;
-  margin-bottom: 1rem;
-  background-color: #fff;
-  color: #171717;
+  margin: 0 auto;
+  padding: 1.5rem;
 }
 
+
+/* Buttons */
 button {
+  border: none;
+  border-radius: var(--border-radius);
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  background-color: #48566d; /* Tailwind blue-500 */
-  color: #fff;
-  font-weight: bold;
   cursor: pointer;
+  font: inherit;
   transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: #2563eb; /* Tailwind blue-600 */
+button.primary {
+  background-color: var(--bg-button-primary);
+  color: var(--text-light);
 }
 
-/* =========================
-   Containers & Layout
-========================= */
-.container {
+button.success {
+  background-color: var(--bg-button-success);
+  color: var(--text-light);
+}
+
+button.danger {
+  background-color: var(--bg-button-danger);
+  color: var(--text-light);
+}
+
+/* Inputs and selects */
+input,
+select {
+  padding: 0.7rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-light);
+  outline: none;
+  width: 100%;
+}
+
+/* Text colors for expenses/income */
+.expense {
+  color: var(--text-expense);
+}
+
+.income {
+  color: var(--text-income);
+}
+
+/* Lists */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Images responsive */
+img {
+  max-width: 100%;
+  display: block;
+}
+/* App container */
+.app-container {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 2rem;
+}
+
+/* Card wrapper */
+.card {
+  background-color: var(--bg-card);
   width: 100%;
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
+  margin-top: 5vh;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* Flex helpers */
-.flex-center {
+/* Header */
+.header {
+  background-color: var(--bg-header);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+  border-radius: 4px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  gap: 1.5rem;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Resource list */
+.resource-list {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.resource-item {
+  background-color: var(--bg-input);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+}
+
+/* Summary at bottom */
+.resource-summary {
+  background-color: var(--bg-input);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  max-width: 600px;
+  text-align: right;
+}
+
+/* Chart card */
+.chart-card {
+  background-color: var(--bg-card);
+  width: 100%;
+  max-width: 800px;
+  min-height: 200px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  color: var(--text-light);
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.2rem;
+}
+/* App container */
+.app-container {
+  background-color: var(--bg-dark);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: inherit;
+  padding: 1.5rem;
 }
 
-.flex-col {
+/* Card wrapper */
+.card {
+  background-color: var(--bg-card);
+  margin-top: 5vh;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  overflow: hidden;
 }
 
-/* =========================
-   Dark Mode Overrides
-========================= */
-@media (prefers-color-scheme: dark) {
-  input, select, textarea {
-    background-color: #1f1f1f;
-    color: #ededed;
-    border: 1px solid #333;
-  }
-
-  button {
-    background-color: #3b82f6;
-    color: #fff;
-  }
-
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-  }
+/* Header */
+.header {
+  background-color: var(--bg-header);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
 }
 
-/* =========================
-   Error / Alerts
-========================= */
-.errors {
-  color: #ff4d4f;
+.title {
+  font-size: 1.5rem;
   font-weight: bold;
-  text-align: center;
-  margin-top: 0.5rem;
 }
 
-/* =========================
-   Headings
-========================= */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans);
+/* Main content */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 1.5rem;
+  gap: 1.5rem;
+  overflow-y: auto;
+}
+
+/* Input box */
+.input-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  gap: 0.75rem;
+  background-color: #273548;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+.input {
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #475569;
+  background-color: #334155;
+  color: #F1F5F9;
+  outline: none;
+}
+
+/* Buttons */
+.button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.button.success {
+  background-color: #10B981;
+}
+
+.button.add {
+  background-color: #3B82F6;
+  align-self: flex-end;
+  padding: 0.5rem 1.2rem;
+}
+
+.button.delete {
+  background-color: #EF4444;
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+}
+
+/* Resource list */
+.resource-list {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.resource-item {
+  background-color: #334155;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+}
+
+.expense {
+  color: rgba(255, 142, 142);
   margin: 0;
 }
 
+.income {
+  color: rgba(115, 182, 106);
+  margin: 0;
+}

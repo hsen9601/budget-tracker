@@ -181,7 +181,11 @@ export default function Dashboard() {
                 }}
               >
                 <button
-                  style={{ maxWidth: "150px", background: "#334155" }}
+                  style={{
+                    maxWidth: "150px",
+                    background: "#334155",
+                    color: "white",
+                  }}
                   onClick={() => handleToggle()}
                 >
                   See Diagrams
