@@ -117,6 +117,7 @@ export default function Login() {
           alignItems: "center",
           marginTop: "5vh",
           gap: "1.2rem",
+          maxHeight: "500px",
         }}
       >
         <h1
